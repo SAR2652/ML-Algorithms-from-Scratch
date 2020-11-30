@@ -13,14 +13,14 @@ print(y)
 plt.scatter(X, y)
 plt.show()
 
-def linear_equation(theta0, theta1, X):
+def hypothesis(theta0, theta1, X):
     """h(X) = theta0 + theta1 * X"""
     return theta0 + theta1 * X
 
 def tune_theta(theta0, theta1, X, learning_rate, m, term = 'bias'):
     
     # claculate linear term
-    linear_term = linear_equation(theta0, theta1, X) - y
+    hpyothesis_term = hypothesis(theta0, theta1, X) - y
     
     # initialize theta parameter to be changed
     theta = theta0
@@ -28,14 +28,14 @@ def tune_theta(theta0, theta1, X, learning_rate, m, term = 'bias'):
     # Change in Theta1 value
     if term == 'weight':
         theta = theta1
-        linear_term *= X
+        hypothesis_term *= X
 
-    return theta - (learning_rate * np.sum(linear_term) / m)
+    return theta - (learning_rate * np.sum(hypothesis_term) / m)
 
 def cost_function(theta0, theta1, X, y, m):
     """Define the Cost Function as:
     J(Theta0, Theta1) = Sum([h(X) - y]^2) / 2m"""
-    return np.sum(np.square(linear_equation(theta0, theta1, X) - y)) / (2 * m)
+    return np.sum(np.square(hypothesis(theta0, theta1, X) - y)) / (2 * m)
 
 def gradient_descent(theta0, theta1, learning_rate, X, m):
     """Assign new values for each iteration of the Gradient Descent Algorithm"""
