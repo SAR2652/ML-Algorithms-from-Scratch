@@ -14,20 +14,31 @@ plt.scatter(X, y)
 plt.show()
 
 def linear_equation(theta0, theta1, X):
+    """h(X) = theta0 + theta1 * X"""
     return theta0 + theta1 * X
 
 def tune_theta(theta0, theta1, X, learning_rate, m, term = 'bias'):
+    
+    # claculate linear term
     linear_term = linear_equation(theta0, theta1, X) - y
+    
+    # initialize theta parameter to be changed
     theta = theta0
+
+    # Change in Theta1 value
     if term == 'weight':
         theta = theta1
         linear_term *= X
+
     return theta - (learning_rate * np.sum(linear_term) / m)
 
 def cost_function(theta0, theta1, X, y, m):
+    """Define the Cost Function as:
+    J(Theta0, Theta1) = Sum([h(X) - y]^2) / 2m"""
     return np.sum(np.square(linear_equation(theta0, theta1, X) - y)) / (2 * m)
 
 def gradient_descent(theta0, theta1, learning_rate, X, m):
+    """Assign new values for each iteration of the Gradient Descent Algorithm"""
     temp0 = tune_theta(theta0, theta1, X, learning_rate, m)
     temp1 = tune_theta(theta0, theta1, X, learning_rate, m, term = 'weight')
     return temp0, temp1
@@ -36,6 +47,7 @@ def gradient_descent(theta0, theta1, learning_rate, X, m):
 n_iter = 1000
 learning_rate = 0.001
 
+# Store these values for plotting after computation
 cost_history = []
 theta0_history = []
 theta1_history = []
