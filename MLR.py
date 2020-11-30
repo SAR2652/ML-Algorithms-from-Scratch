@@ -42,9 +42,14 @@ learning_rate = 0.0001
 
 def gradient_descent(X, y, weights, learning_rate, m):
     """The output of the hypothesis function must be multiplied with a transpose of 
-    the feature matrix X in order to restore dimensions to features(weights) x 1"""
+    the feature matrix X in order to restore dimensions to (1 x no. of features).
+    However, the weights array has a dimension of (no. of features x 1).
+    Hence, we calculate differnce of transpose of weights and the product of
+    the result of the hypothesis function and transpose of feature matrix X.
+    The transpose of the difference is returned to restore priginal dimensions of weights array, i.e. (features x 1)"""
     new_weights = np.transpose(weights) - learning_rate * np.dot(hypothesis(X, y, weights), np.transpose(X)) / m
     return np.transpose(new_weights)
+
 def train_multivariate_regression_model(X, y, n_iter = 1000, learning_rate = 0.001):
     m = X.shape[1]
     # Declare and initialize random
