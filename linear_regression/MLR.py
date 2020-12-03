@@ -24,30 +24,34 @@ plt.show()
 # and stack it horizontally with the feature matrix  
 ones = np.ones((1, 1000))
 X = np.vstack((ones, X))
-print("X: {}".format(X))
+print("X: \n{}".format(X))
 
 # Store these values for plotting after computation
 cost_history = []
 weights_history = []
 
-def hypothesis(X, y, weights):
-    """Returns an array of dimensions features 1 x m"""
+def hypothesis_error(X, y, weights):
+    """
+    Dimensionality Analysis:
+    Dot Product of Transpose(Weights) & X = (1 x (N + 1)) . ((N + 1) x m) = (1 x m)
+    Returns an array with dimensions (1 x m)
+    """
     return np.dot(np.transpose(weights), X) - y
 
 def cost_function(X, y, m, weights):
-    return np.sum(np.square(hypothesis(X, y, weights))) / (2 * m)
+    return np.sum(np.square(hypothesis_error(X, y, weights))) / (2 * m)
 
 n_iter = 10000
 learning_rate = 0.0001
 
 def gradient_descent(X, y, weights, learning_rate, m):
     """The output of the hypothesis function must be multiplied with a transpose of 
-    the feature matrix X in order to restore dimensions to (1 x no. of features).
+    the feature matrix X in order to restore dimensions to (1 x N).
     However, the weights array has a dimension of (no. of features x 1).
-    Hence, we calculate differnce of transpose of weights and the product of
+    Hence, we calculate difference of transpose of weights and the product of
     the result of the hypothesis function and transpose of feature matrix X.
-    The transpose of the difference is returned to restore priginal dimensions of weights array, i.e. (features x 1)"""
-    new_weights = np.transpose(weights) - learning_rate * np.dot(hypothesis(X, y, weights), np.transpose(X)) / m
+    The transpose of the difference is returned to restore original dimensions of weights array, i.e. (features x 1)"""
+    new_weights = np.transpose(weights) - learning_rate * np.dot(hypothesis_error(X, y, weights), np.transpose(X)) / m
     return np.transpose(new_weights)
 
 def train_multivariate_regression_model(X, y, n_iter = 1000, learning_rate = 0.001):
@@ -92,5 +96,3 @@ for i in range(1, 5):
     axes[r][c].plot([i for i in range(1, n_iter + 1)], weights_history[:, i])
     
 plt.show()
-
-
