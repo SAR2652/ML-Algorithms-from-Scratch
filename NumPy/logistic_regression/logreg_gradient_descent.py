@@ -1,10 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.datasets import make_classification
+
 
 # Generate an input matrix of 1000 rows and 4 columns/features
 N = 4
-X_ip = 0.07 * np.random.randn(1000, N)             # dimensions = 1000 x N
-y_ip = np.random.randint(0, 2, (1000, 1))     # dimensions = 1000 x 1
+X_ip, y_ip = make_classification(1000, 4)   # dimensions = 1000 x 1
 
 # Take transpose of feature and target matrices for ease of computation
 X = np.transpose(X_ip)      # dimensions = N x 1000
