@@ -1,3 +1,2 @@
-drivers_tf/.ipynb_checkpoints
-Tensorflow/__pycache__
-Tensorflow/Linear_Models/__pycache__/
+.ipynb_checkpoints
+__pycache__
