@@ -1,5 +1,4 @@
 import random
-from matplotlib.pyplot import title
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -13,15 +12,17 @@ print(y)
 plt.scatter(X, y)
 plt.show()
 
+
 def hypothesis(theta0, theta1, X):
     """h(X) = theta0 + theta1 * X"""
     return theta0 + theta1 * X
 
-def tune_theta(theta0, theta1, X, learning_rate, m, term = 'bias'):
-    
-    # claculate linear term
-    hpyothesis_term = hypothesis(theta0, theta1, X) - y
-    
+
+def tune_theta(theta0, theta1, X, learning_rate, m, term='bias'):
+
+    # calculate linear term
+    hypothesis_term = hypothesis(theta0, theta1, X) - y
+
     # initialize theta parameter to be changed
     theta = theta0
 
@@ -32,16 +33,20 @@ def tune_theta(theta0, theta1, X, learning_rate, m, term = 'bias'):
 
     return theta - (learning_rate * np.sum(hypothesis_term) / m)
 
+
 def cost_function(theta0, theta1, X, y, m):
     """Define the Cost Function as:
     J(Theta0, Theta1) = Sum([h(X) - y]^2) / 2m"""
     return np.sum(np.square(hypothesis(theta0, theta1, X) - y)) / (2 * m)
 
+
 def gradient_descent(theta0, theta1, learning_rate, X, m):
-    """Assign new values for each iteration of the Gradient Descent Algorithm"""
+    """Assign new values for each iteration"""
+    """of the Gradient Descent Algorithm"""
     temp0 = tune_theta(theta0, theta1, X, learning_rate, m)
-    temp1 = tune_theta(theta0, theta1, X, learning_rate, m, term = 'weight')
+    temp1 = tune_theta(theta0, theta1, X, learning_rate, m, term='weight')
     return temp0, temp1
+
 
 # Set to default values
 n_iter = 1000
@@ -52,8 +57,11 @@ cost_history = []
 theta0_history = []
 theta1_history = []
 
-def train_regression_model(X, y, learning_rate = 0.0001, n_iter = 10000):
-    """This algorithm requires a learning rate of 0.1 or lesser due to the values of the data taken as input. A larger learning rate can be used for different input values"""
+
+def train_regression_model(X, y, learning_rate=0.0001, n_iter=10000):
+    """This algorithm requires a learning rate of 0.1 or lesser due to"""
+    """the values of the data taken as input. A larger learning rate can be"""
+    """used for different input values"""
 
     # Initialise with temporary values
     theta0 = random.randint(-100, 100)
@@ -70,6 +78,7 @@ def train_regression_model(X, y, learning_rate = 0.0001, n_iter = 10000):
         theta1_history.append(theta1)
         print("Loss at Iteration {} = {}".format(i + 1, cost))
     return theta0, theta1
+
 
 bias, weight = train_regression_model(X, y, learning_rate, n_iter)
 print("Bias = {}".format(bias))
@@ -92,4 +101,3 @@ plt.ylabel('Feature Weight')
 plt.title('Change in Feature Weight')
 plt.plot([i for i in range(1, n_iter + 1)], theta1_history)
 plt.show()
-

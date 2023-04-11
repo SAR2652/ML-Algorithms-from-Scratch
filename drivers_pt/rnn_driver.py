@@ -1,13 +1,10 @@
-import sys
 import torch
-
-sys.path.append('../')
-from PyTorch.RNN import RNNLayer
+from PyTorch.RNN import RNNLayer, RNNLayerForTextClassification
 
 
 sentence = 'Life is short, eat dessert first'
 
-dc = {s:i for i,s in enumerate(sorted(sentence.replace(',', '').split()))}
+dc = {s: i for i, s in enumerate(sorted(sentence.replace(',', '').split()))}
 print(dc)
 
 sentence_int = torch.tensor([dc[s] for s in sentence.replace(',', '').split()])
@@ -20,8 +17,19 @@ embedded_sentence = embed(sentence_int).detach()
 # print(embedded_sentence)
 print(f'Embedded sentence shape = {embedded_sentence.shape}')
 
-rnn = RNNLayer(embedded_sentence.size()[-1], 20)
+embedding_shape = embedded_sentence.size()[-1]
+rnn = RNNLayer(embedding_shape, 20)
 h_out = rnn(embedded_sentence)
 
-# print(h_out)
-print(h_out.shape)
+print(f'Output Shape = {h_out.shape}')
+
+rnn_binary_classifier = RNNLayerForTextClassification(embedding_shape,
+                                                      20, 1)
+
+probability = rnn_binary_classifier(embedded_sentence)
+# print(probability)
+
+rnn_multi_classifier = RNNLayerForTextClassification(embedding_shape,
+                                                     20, 3)
+probabilities = rnn_multi_classifier(embedded_sentence)
+# print(probabilities)

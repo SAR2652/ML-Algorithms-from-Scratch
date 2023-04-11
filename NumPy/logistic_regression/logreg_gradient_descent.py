@@ -22,7 +22,7 @@ for i in range(X.shape[0]):
 plt.show()
 
 # Declare an extra column of ones to deal with weights for bias \
-# and stack it horizontally with the feature matrix  
+# and stack it horizontally with the feature matrix
 ones = np.ones((1, 1000))
 X = np.vstack((ones, X))
 print("X: \n{}".format(X))    # dimensions = (N + 1) x 1000
@@ -33,38 +33,49 @@ cost_history = []
 weights_history = []
 accuracy_history = []
 
+
 def sigmoid(z):
     return 1 / (1 + np.exp((-1) * z))
+
 
 def hypothesis(X, weights):
     """
     Dimensionality Analysis:
-    Dot Product of Transpose(Weights) & X = (1 x (N + 1)) . ((N + 1) x m) = (1 x m)
+    Dot Product of Transpose(Weights) & X
+    = (1 x (N + 1)) . ((N + 1) x m) = (1 x m)
     Returns an array with dimensions (1 x m)"""
     return sigmoid(np.dot(np.transpose(weights), X))
 
+
 def cost_function(X, y, m, weights):
     """
-    Dot Product of y & Transpose(log(hypothesis)) = (1 x m) . (m x 1) = 1 x 1 <- Scalar
-    Dot product of (1 - y) & Transpose(log(1 - hypothesis)) = (1 x m) . (m x 1) = 1 x 1 <- Scalar
+    Dot Product of y & Transpose(log(hypothesis))
+    = (1 x m) . (m x 1) = 1 x 1 <- Scalar
+    Dot product of (1 - y) & Transpose(log(1 - hypothesis))
+    = (1 x m) . (m x 1) = 1 x 1 <- Scalar
     Returns Scalar
     """
-    return (-1) * np.asscalar(np.dot(y, np.transpose(np.log(hypothesis(X, weights)))) - np.dot((1 - y), np.transpose(np.log(1 - hypothesis(X, weights))))) / m
+    log_hypothesis = np.transpose(np.log(hypothesis(X, weights)))
+    return (-1) * np.asscalar(np.dot(y, log_hypothesis) - np.dot((1 - y), np.transpose(np.log(1 - hypothesis(X, weights))))) / m
+
 
 def cost_function_derivative(X, y, m, weights):
     """
-    Dot Product of (hypothesis - y) & Transpose(X) = (1 x m) . (m x (N + 1)) = (1 x (N + 1))
+    Dot Product of (hypothesis - y) & Transpose(X)
+    = (1 x m) . (m x (N + 1)) = (1 x (N + 1))
     """
     return np.dot(hypothesis(X, weights) - y, np.transpose(X)) / m
+
 
 def accuracy(X, y, m, weights):
     """Formula for Accuracy:
     Accuracy = (True Positives + True Negatives) / (No. of Training Samples)
     """
     y_pred_raw = hypothesis(X, weights)
-    y_pred_raw = np.where(y_pred_raw >= 0.5, y_pred_raw, 0) # Apply opposite condition
+    # Apply opposite condition
+    y_pred_raw = np.where(y_pred_raw >= 0.5, y_pred_raw, 0)
     y_pred = np.where(y_pred_raw < 0.5, y_pred_raw, 1)
-    unique, counts = np.unique(y == y_pred, return_counts = True)
+    unique, counts = np.unique(y == y_pred, return_counts=True)
     count_dict = dict(zip(unique, counts))
     acc = 0
     if True in count_dict.keys():
@@ -74,13 +85,16 @@ def accuracy(X, y, m, weights):
 
 def gradient_descent(X, y, m, learning_rate, weights):
     """Returns Array with dimensions ((N + 1) x 1)"""
-    new_weights = np.transpose(weights) - learning_rate * cost_function_derivative(X, y, m, weights)
+    lr_cost = learning_rate * cost_function_derivative(X, y, m, weights)
+    new_weights = np.transpose(weights) - lr_cost
     return np.transpose(new_weights)
+
 
 n_iter = 1000
 learning_rate = 0.001
 
-def train_binary_classifier(X, y, learning_rate = 0.001, n_iter = 1000):
+
+def train_binary_classifier(X, y, learning_rate=0.001, n_iter=1000):
     m = X.shape[1]      # Number of training samples
     # Declare and initialize random
     weights = np.random.randn(N + 1, 1)     # dimensions = (N + 1) x 1
@@ -98,7 +112,8 @@ def train_binary_classifier(X, y, learning_rate = 0.001, n_iter = 1000):
 
     return weights
 
-weights = train_binary_classifier(X, y ,learning_rate, n_iter)
+
+weights = train_binary_classifier(X, y, learning_rate, n_iter)
 
 weights_history = np.array(weights_history)
 
@@ -121,7 +136,7 @@ plt.plot([i for i in range(1, n_iter + 1)], weights_history[:, 0])
 plt.show()
 
 fig, axes = plt.subplots(2, 2)
-plt.subplots_adjust(hspace = 0.5)
+plt.subplots_adjust(hspace=0.5)
 for i in range(1, 5):
     r = int((i - 1) / (N / 2))
     c = int((i - 1) % (N / 2))
@@ -129,5 +144,5 @@ for i in range(1, 5):
     axes[r][c].set_xlabel('Iterations')
     axes[r][c].set_ylabel('Value')
     axes[r][c].plot([i for i in range(1, n_iter + 1)], weights_history[:, i])
-    
+
 plt.show()

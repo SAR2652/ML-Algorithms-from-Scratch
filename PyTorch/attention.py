@@ -1,6 +1,10 @@
 import torch
 import torch.nn as nn
 
+class SelfAttention(nn.Module):
+    def __init__(self, ):
+
+
 class BidirectionalEncoder(nn.Module):
     def __init__(self, input_size, hidden_size, bidirectional=True):
         super(self).__init__()
